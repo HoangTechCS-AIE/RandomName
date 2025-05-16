@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Ngọc Random</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f9f9f9;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎡 Sân chơi của Chụy</h1>
+  <p>Nhập danh sách tên sinh viên (mỗi tên trên một dòng):</p>
+  <textarea id="studentList" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Văn C"></textarea>
+  <br>
+  <button onclick="spin()">Quay Vòng!</button>
+
+  <div id="result"></div>
+
+  <script>
+    function spin() {
+      const rawInput = document.getElementById("studentList").value;
+      const names = rawInput
+        .split(/\r?\n/)
+        .map(name => name.trim())
+        .filter(name => name !== "");
+
+      if (names.length < 30) {
+        alert("Vui lòng nhập ít nhất 30 tên.");
+        return;
+      }
+
+      const selected = [];
+      const usedIndices = new Set();
+
+      while (selected.length < 30) {
+        const index = Math.floor(Math.random() * names.length);
+        if (!usedIndices.has(index)) {
+          usedIndices.add(index);
+          selected.push(names[index]);
+        }
+      }
+
+      document.getElementById("result").innerText =
+        "🎉 30 bạn may mắn là:\n\n" +
+        selected.map((name, i) => `${i + 1}. ${name}`).join("\n");
+    }
+  </script>
+
+</body>
+</html>
