@@ -14,6 +14,12 @@
       height: 200px;
       font-size: 16px;
     }
+    input[type="number"] {
+      width: 80px;
+      font-size: 16px;
+      padding: 5px;
+      margin-top: 10px;
+    }
     button {
       padding: 10px 20px;
       margin-top: 20px;
@@ -29,11 +35,15 @@
 </head>
 <body>
 
-  <h1>🎡 Sân chơi của Chụy</h1>
+  <h1>🎡 Sân chơi của chụy</h1>
   <p>Nhập danh sách tên sinh viên (mỗi tên trên một dòng):</p>
   <textarea id="studentList" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Văn C"></textarea>
+
+  <p>Nhập số lượng cần chọn:</p>
+  <input type="number" id="amount" min="1" value="5">
+
   <br>
-  <button onclick="spin()">Quay Vòng!</button>
+  <button onclick="spin()">Let Gooo!</button>
 
   <div id="result"></div>
 
@@ -45,15 +55,18 @@
         .map(name => name.trim())
         .filter(name => name !== "");
 
-      if (names.length < 30) {
-        alert("Vui lòng nhập ít nhất 30 tên.");
+      const amountInput = parseInt(document.getElementById("amount").value);
+      const amount = isNaN(amountInput) ? 1 : amountInput;
+
+      if (names.length < amount) {
+        alert(`Vui lòng nhập ít nhất ${amount} tên.`);
         return;
       }
 
       const selected = [];
       const usedIndices = new Set();
 
-      while (selected.length < 30) {
+      while (selected.length < amount) {
         const index = Math.floor(Math.random() * names.length);
         if (!usedIndices.has(index)) {
           usedIndices.add(index);
@@ -62,7 +75,7 @@
       }
 
       document.getElementById("result").innerText =
-        "🎉 30 bạn may mắn là:\n\n" +
+        `🎉 Những cái tên may mắn là: ${amount} sinh viên:\n\n` +
         selected.map((name, i) => `${i + 1}. ${name}`).join("\n");
     }
   </script>
