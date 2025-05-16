@@ -2,48 +2,64 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Ngọc Random</title>
+  <title>Ngọc Spin</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 40px;
-      background: #E8D3E3;
+      margin: 0;
+      background: url('background.gif') no-repeat center center fixed;
+      background-size: cover; /* <-- auto điều chỉnh kích thước ảnh */
+      color: #000;
     }
+
     textarea {
       width: 100%;
       height: 200px;
       font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
     }
-    input[type="number"] {
-      width: 80px;
+
+    input[type="number"], input[type="file"] {
       font-size: 16px;
-      padding: 5px;
       margin-top: 10px;
+      padding: 5px;
     }
+
     button {
       padding: 10px 20px;
       margin-top: 20px;
       font-size: 16px;
       cursor: pointer;
     }
+
     #result {
       margin-top: 30px;
       font-size: 18px;
       white-space: pre-wrap;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      border-radius: 10px;
+      color: #fff;
     }
   </style>
 </head>
 <body>
 
-  <h1>🎡 Sân chơi của chụy</h1>
+  <h1>🎡 Sân chơi này là của Chụy</h1>
+
   <p>Nhập danh sách tên sinh viên (mỗi tên trên một dòng):</p>
   <textarea id="studentList" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Văn C"></textarea>
 
   <p>Nhập số lượng cần chọn:</p>
   <input type="number" id="amount" min="1" value="5">
 
+  <p>Chọn ảnh nền (GIF hoặc JPG/PNG):</p>
+  <input type="file" id="bgInput" accept="image/*" onchange="changeBackground(event)">
+
   <br>
-  <button onclick="spin()">Let Gooo!</button>
+  <button onclick="spin()">Quay Vòng!</button>
 
   <div id="result"></div>
 
@@ -75,8 +91,23 @@
       }
 
       document.getElementById("result").innerText =
-        `🎉 Những cái tên may mắn là: ${amount} sinh viên:\n\n` +
+        `🎉 Những cái tên được sướng là: ${amount} sinh viên:\n\n` +
         selected.map((name, i) => `${i + 1}. ${name}`).join("\n");
+    }
+
+    function changeBackground(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.body.style.backgroundImage = `url('${e.target.result}')`;
+        document.body.style.backgroundRepeat = "no-repeat";
+        document.body.style.backgroundPosition = "center center";
+        document.body.style.backgroundAttachment = "fixed";
+        document.body.style.backgroundSize = "cover"; // <-- auto scale phù hợp
+      };
+      reader.readAsDataURL(file);
     }
   </script>
 
